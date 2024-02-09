@@ -2,7 +2,7 @@
 import {  useMutation,  useQueryClient } from "@tanstack/react-query"
 
 import { QUERIES } from "../../const/queries"
-import { Navigate, redirect, useNavigate, useParams } from "react-router-dom"
+import { Link as RouterLink, useParams } from "react-router-dom"
 import * as React from 'react';
 
 import Button from '@mui/material/Button';
@@ -15,6 +15,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { Ranch, createNewRanch } from "../../api/ranchs-api";
 
 import { AppError, ServerResponse } from "../../api/server-response";
+import { Link } from "@mui/material";
 
 
 
@@ -27,7 +28,7 @@ type Inputs = {
 export const CreateRanchForm = ()=>{
 
     const { id } = useParams()
-    const navigate = useNavigate()
+    
     
     const queryClient = useQueryClient()
     const ranchs =  queryClient.getQueryData<Ranch[]>([QUERIES.RANCHS])
@@ -72,7 +73,7 @@ export const CreateRanchForm = ()=>{
             
             queryClient.invalidateQueries({ queryKey:[QUERIES.RANCHS], refetchType:"active" })
             reset()
-             navigate("/ranchs")
+             
             // console.log("")
         
         },
@@ -124,9 +125,16 @@ export const CreateRanchForm = ()=>{
             alignItems: 'center',
             }}
         >
+            
+            <Link component={RouterLink} to={`/ranchs`} variant="button"  >
+                            <Button variant="outlined" >x</Button>
+            </Link>
+
             <Typography component="h1" variant="h5">
                { id ?  `Edit ranch` : "Create new ranch"}
             </Typography>
+
+
             <Box component="form" onSubmit={handleSubmit(onSubmit)} noValidate sx={{ mt: 1 }}>
             
             {/* <input defaultValue="test"  /> */}
@@ -153,6 +161,9 @@ export const CreateRanchForm = ()=>{
             >
                 { id ? "Edit" : "Create" }
             </Button>
+
+            
+
             </Box>
         </Box>
         

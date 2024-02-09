@@ -26,6 +26,7 @@ import { logOut } from "../../api/auth"
 import { Outlet } from 'react-router-dom';
 import { Link, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { Link as RouterLink  } from 'react-router-dom'
+import { Inventory2, LocationOn } from '@mui/icons-material';
 
 const drawerWidth: number = 240;
 
@@ -166,7 +167,7 @@ export const Layout =()=>{
   
               <ListItemButton>
                 <ListItemIcon>
-                    <DashboardIcon />
+                    <LocationOn />
                 </ListItemIcon>
                 <ListItemText primary="Ranchs" />
               </ListItemButton>
@@ -174,16 +175,15 @@ export const Layout =()=>{
 
 
               
-          <Link component={RouterLink} to="/  ">
-    
-  
-    <ListItemButton>
-      <ListItemIcon>
-          <DashboardIcon />
-      </ListItemIcon>
-      <ListItemText primary="Dash" />
-    </ListItemButton>
-    </Link>
+            <Link component={RouterLink} to="/internet-packages">
+              <ListItemButton>
+                <ListItemIcon>
+                    <Inventory2 />
+                </ListItemIcon>
+                <ListItemText primary="Dash" />
+              </ListItemButton>
+            </Link>
+
           </List>
         
         
@@ -205,7 +205,7 @@ export const Layout =()=>{
         >
           <Toolbar />
           <Container  sx={{ mt: 8, mb: 4 }}>
-            <Grid container spacing={3}>
+            <Grid container  sx={ { padding:".5em 1em" }}>
               <Outlet/>
             </Grid>
             

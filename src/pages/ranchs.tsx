@@ -1,15 +1,21 @@
-import { useQuery } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { QUERIES } from "../const/queries"
-import { Ranch, getAllRanchs } from "../api/ranchs-api"
-import { Button, CircularProgress, Grid, Link } from "@mui/material"
+import { Ranch, deleteRanchById, getAllRanchs } from "../api/ranchs-api"
+import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, Link, Typography } from "@mui/material"
 
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid"
 
 import { Link as RouterLink, Outlet } from "react-router-dom"
+import { useRef, useState } from "react"
 
 
 
 export const Ranchs = ()=>{
+
+    const [open, setOpen] = useState(false);
+
+    let toDelete = useRef<Ranch | null | undefined>(null)
+
 
 
     const ranchsQuery = useQuery({  
@@ -18,12 +24,35 @@ export const Ranchs = ()=>{
     })
 
     
+    const deleteMutation = useMutation(
+        {
+            mutationFn: deleteRanchById,
+            onSuccess:()=>{
+                ranchsQuery.refetch()
+                setOpen(false)
+            }
+        }
+    )
 
 
     if( ranchsQuery.isLoading) return <CircularProgress />
     if(ranchsQuery.isError) return <>There was an error</>
 
+    const handleClose = () => {
+        if(toDelete.current?.id){
+            deleteMutation.mutate({id: toDelete.current?.id})
+        }
+        
+
+        
+    };
+
     
+    const handleClickDelete = (id: number) => {
+        
+        toDelete.current = ranchsQuery.data!.find(ranch => ranch.id === id )  
+        setOpen(true);
+    };
 
 
     const rows: GridRowsProp<Ranch> = ranchsQuery.data!
@@ -35,14 +64,44 @@ export const Ranchs = ()=>{
 
         
         return  <>
-            
+            <Box sx={{ display:"flex",gap:"1em", alignItems:"center" }} >
+
             <Link component={RouterLink} 
                 to={`/ranchs/edit/${params.row.id}`}
                 variant="body2"
-
                 >
                 Edit 
             </Link>
+
+
+            
+            <Button variant="outlined" color="warning" size="small"   onClick={()=>{ handleClickDelete( params.row.id)}}>
+                Delete
+            </Button>
+            <Dialog
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                {"Are you sure you want to delete"}
+                </DialogTitle>
+                <DialogContent>
+                <DialogContentText id="alert-dialog-description">
+                    {`You are about to delete`} <strong> {`"${toDelete.current?.name}"`} </strong> permanently are you sure?
+                </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleClose}>Disagree</Button>
+                <Button onClick={handleClose} autoFocus>
+                    Agree
+                </Button>
+                </DialogActions>
+            </Dialog>
+            
+            </Box>
+
         </>
     } }
     ];
@@ -53,18 +112,38 @@ export const Ranchs = ()=>{
     return (
         <Grid container spacing={2}>
             <Grid xs={12}>
-                Titulop
-                <Link component={RouterLink} to={`/ranchs/new`}   variant="body2"
-                    >
-                    Add New Ranch
-                </Link>
+                <Grid container>
+                    <Grid xs={12}>
+
+                    <Link component={RouterLink} to={`/ranchs`} variant="button"  fontSize={"1em"} >
+                        <Button variant="text">
+                        <Typography variant="h5" component="h1">
+                            Ranchs
+                        </Typography>
+                        </Button>
+
+                        </Link> 
+
+                    </Grid>
+                    <Grid xs={12} sx={{ padding:"1.5em .5em"}}>
+                        <Link component={RouterLink} to={`/ranchs/new`} variant="button"  fontSize={"1em"} >
+                            <Button variant="contained">Add new ranch</Button>
+
+                        </Link>                
+                    </Grid>
+
+
+                </Grid>
             </Grid>
-            <Grid xs={12}  >
-              <DataGrid rows={rows} columns={columns}  />
-            </Grid>
+
+            
             <Grid xs={12}>
 
                 <Outlet/>
+            </Grid>
+
+            <Grid xs={12} sx={{maxHeight:"60vh"}} >
+              <DataGrid rows={rows} columns={columns}  />
             </Grid>
         </Grid>
 

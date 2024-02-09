@@ -54,3 +54,19 @@ export const  APIClient = axios.create({
       }
 
   }
+
+
+  export const deleteRanchById = async ({id}:{id:number})=>{
+
+
+      try {
+        
+        const response = await APIClient.delete<ServerResponse<Ranch>>("/ranchs/"+id)
+        return response.data.data
+
+      } catch (error) {
+        
+      }
+
+
+  }

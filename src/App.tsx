@@ -36,6 +36,11 @@ function App() {
                     <Route   element={ <Layout/>  }>
 
                         <Route path='/' element={<>This is the dashboard</>}/>
+                        
+                        <Route path="/internet-packages" element={<>This is are the packages</>}>
+
+                        </Route>
+                        
                         <Route path="/ranchs" element ={<Ranchs/>}>
                             <Route path='/ranchs/new' element={ <CreateRanchForm/> } />
                             <Route path='/ranchs/edit/:id' element={ <CreateRanchForm/> } />
