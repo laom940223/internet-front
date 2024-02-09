@@ -50,7 +50,7 @@ export const Login =()=>{
             // redirect("/")
         }
         
-    })
+    })  
 
     
     // console.log("Rendering login", authQuery)

@@ -2,5 +2,6 @@
 
 export const QUERIES ={
 
-    me:"ME"
+    me:"ME",
+    RANCHS: "RANCHS"
 }

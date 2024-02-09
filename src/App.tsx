@@ -11,6 +11,8 @@ import { QUERIES } from './const/queries'
 import { ThemeProvider } from '@emotion/react'
 import { Container, CssBaseline, createTheme } from '@mui/material'
 import { Layout } from './components/layout/layout'
+import { Ranchs } from './pages/ranchs'
+import { CreateRanchForm } from './components/ranchs/create-ranchform'
 
 
 const defaultTheme = createTheme();
@@ -33,7 +35,11 @@ function App() {
                 <Route element={ <PrivateRoute/>}> 
                     <Route   element={ <Layout/>  }>
 
-                        <Route path='/' element={<>This is the dashboard</>}/>                      
+                        <Route path='/' element={<>This is the dashboard</>}/>
+                        <Route path="/ranchs" element ={<Ranchs/>}>
+                            <Route path='/ranchs/new' element={ <CreateRanchForm/> } />
+                            <Route path='/ranchs/edit/:id' element={ <CreateRanchForm/> } />
+                        </Route>                      
                     
                     </Route>
                 </Route>

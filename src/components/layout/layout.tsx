@@ -24,7 +24,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { QUERIES } from "../../const/queries"
 import { logOut } from "../../api/auth"
 import { Outlet } from 'react-router-dom';
-import { ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Link, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Link as RouterLink  } from 'react-router-dom'
 
 const drawerWidth: number = 240;
 
@@ -158,15 +159,38 @@ export const Layout =()=>{
             </IconButton>
           </Toolbar>
           <Divider />
+          
           <List component="nav">
-          <ListItemButton>
-            <ListItemIcon>
-                <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-            </ListItemButton>
+          <Link component={RouterLink} to="/ranchs">
+    
+  
+              <ListItemButton>
+                <ListItemIcon>
+                    <DashboardIcon />
+                </ListItemIcon>
+                <ListItemText primary="Ranchs" />
+              </ListItemButton>
+              </Link>
+
+
+              
+          <Link component={RouterLink} to="/  ">
+    
+  
+    <ListItemButton>
+      <ListItemIcon>
+          <DashboardIcon />
+      </ListItemIcon>
+      <ListItemText primary="Dash" />
+    </ListItemButton>
+    </Link>
           </List>
+        
+        
+        
         </Drawer>
+        
+        
         <Box
           component="main"
           sx={{
@@ -180,7 +204,7 @@ export const Layout =()=>{
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Container  sx={{ mt: 8, mb: 4 }}>
             <Grid container spacing={3}>
               <Outlet/>
             </Grid>
