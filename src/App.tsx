@@ -8,11 +8,16 @@ import { Login } from './components/auth/login'
 import { useQuery } from '@tanstack/react-query'
 import { User, getMe } from './api/auth'
 import { QUERIES } from './const/queries'
-import { ThemeProvider } from '@emotion/react'
-import { Container, CssBaseline, createTheme } from '@mui/material'
+
+import {  createTheme } from '@mui/material'
 import { Layout } from './components/layout/layout'
 import { Ranchs } from './pages/ranchs'
 import { CreateRanchForm } from './components/ranchs/create-ranchform'
+import { InternetPackages } from './pages/packages'
+import {  Services } from './pages/services'
+import { AddNewService } from './components/services/add-new-service'
+import { Dash } from './pages/dash'
+import { ServiceDetails } from './components/services/service-details'
 
 
 const defaultTheme = createTheme();
@@ -35,10 +40,18 @@ function App() {
                 <Route element={ <PrivateRoute/>}> 
                     <Route   element={ <Layout/>  }>
 
-                        <Route path='/' element={<>This is the dashboard</>}/>
+                        <Route path='/' element={<Dash/>}/>
                         
-                        <Route path="/internet-packages" element={<>This is are the packages</>}>
+                        <Route path="/services" >
+                            <Route path='/services' element ={<Services/>}/>
+                            <Route path="/services/new" element={<AddNewService/>}/>
+                            <Route path="/services/:id" element={<ServiceDetails/>}>
+                                <Route path='/services/:id/location' element={<Dash/>}/>
+                            </Route>
+                        </Route>
 
+
+                        <Route path="/internet-packages" element={<InternetPackages />}>
                         </Route>
                         
                         <Route path="/ranchs" element ={<Ranchs/>}>
@@ -46,6 +59,9 @@ function App() {
                             <Route path='/ranchs/edit/:id' element={ <CreateRanchForm/> } />
                         </Route>                      
                     
+
+
+
                     </Route>
                 </Route>
                 

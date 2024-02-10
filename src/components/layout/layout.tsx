@@ -23,10 +23,10 @@ import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { QUERIES } from "../../const/queries"
 import { logOut } from "../../api/auth"
-import { Outlet } from 'react-router-dom';
-import { Link, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Outlet, useLocation } from 'react-router-dom';
+import { Breadcrumbs, Link, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
 import { Link as RouterLink  } from 'react-router-dom'
-import { Inventory2, LocationOn } from '@mui/icons-material';
+import { HomeRepairService, Inventory2, LocationOn } from '@mui/icons-material';
 
 const drawerWidth: number = 240;
 
@@ -88,25 +88,40 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 export const Layout =()=>{
 
     const queryClient = useQueryClient()
-
-    const logInMutation = useMutation({
-        mutationFn: logOut,
-        onSuccess:()=>{
-            queryClient.setQueryData([QUERIES.me], ()=>null)
-            // redirect("/")
+    const {pathname} = useLocation()
+    // console.log(pathname)
+        
+    const paths=   pathname.split("/")
+    const finalpaths = paths.map((current, index, full)=>{
+        return { 
+          label:current==="" ? "Home" : current ,
+          link: `/${full.slice(1, index+1).join("/")}`
         }
     })
-
+    
     const [open, setOpen] = React.useState(true);
     const toggleDrawer = () => {
       setOpen(!open);
     };
 
-    const handleLogOut =()=>{
+    
 
-        logInMutation.mutate()
 
-    }
+    const breadcrumbslinks = finalpaths.map((path, index, full)=>{
+
+      const len = full.length
+
+      if( index+1 === len){
+        return <>{path.label}</>
+      } 
+
+      return <Link component={RouterLink} to={path.link} variant="caption"  sx={{ textDecoration:"none"}} fontSize={"1em"} >
+                            {path.label}
+      
+              </Link>
+
+    })
+
 
     return(
         <>
@@ -162,27 +177,49 @@ export const Layout =()=>{
           <Divider />
           
           <List component="nav">
-          <Link component={RouterLink} to="/ranchs">
-    
-  
+          
+          <Link sx={{textDecoration:"none", color:"grey"}}  component={RouterLink} to="/">
+              <ListItemButton>
+                <ListItemIcon>
+                    <HomeRepairService />
+                </ListItemIcon>
+                <ListItemText   primary="Dash" />
+              </ListItemButton>
+            </Link>
+
+
+          <Link sx={{textDecoration:"none", color:"grey"}}  component={RouterLink} to="/services">
+              <ListItemButton>
+                <ListItemIcon>
+                    <HomeRepairService />
+                </ListItemIcon>
+                <ListItemText   primary="Services" />
+              </ListItemButton>
+            </Link>
+
+            
+
+          <Link sx={{textDecoration:"none", color:"grey"}}  component={RouterLink} to="/internet-packages">
+              <ListItemButton>
+                <ListItemIcon>
+                    <Inventory2 />
+                </ListItemIcon>
+                <ListItemText   primary="Internet Packages" />
+              </ListItemButton>
+            </Link>
+
+          <Link sx={{textDecoration:"none", color:"grey"}} component={RouterLink} to="/ranchs">
               <ListItemButton>
                 <ListItemIcon>
                     <LocationOn />
                 </ListItemIcon>
                 <ListItemText primary="Ranchs" />
               </ListItemButton>
-              </Link>
+          </Link>
 
 
               
-            <Link component={RouterLink} to="/internet-packages">
-              <ListItemButton>
-                <ListItemIcon>
-                    <Inventory2 />
-                </ListItemIcon>
-                <ListItemText primary="Dash" />
-              </ListItemButton>
-            </Link>
+            
 
           </List>
         
@@ -200,16 +237,30 @@ export const Layout =()=>{
                 : theme.palette.grey[900],
             flexGrow: 1,
             height: '100vh',
+            // maxWidth:"200px",
+            boxSizing:"border-box",
             overflow: 'auto',
           }}
         >
           <Toolbar />
-          <Container  sx={{ mt: 8, mb: 4 }}>
-            <Grid container  sx={ { padding:".5em 1em" }}>
-              <Outlet/>
+          {/* <Container  sx={{ mt: 8, mb: 4 }}> */}
+            <Grid container  sx={ { padding:"2em 3em" }} spacing={2}>
+                
+                <Grid item xs={12}>
+                  <Breadcrumbs maxItems={5} aria-label="breadcrumb">
+                      {breadcrumbslinks}
+                  </Breadcrumbs>
+                </Grid>
+                
+                <Grid item xs={12}>
+                  
+                      <Outlet/>
+                  
+                </Grid>
+                
             </Grid>
             
-          </Container>
+          {/* </Container> */}
         </Box>
       </Box>
     </>

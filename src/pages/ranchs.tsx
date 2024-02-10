@@ -111,39 +111,32 @@ export const Ranchs = ()=>{
 
     return (
         <Grid container spacing={2}>
-            <Grid xs={12}>
+            <Grid item xs={12}>
                 <Grid container>
                     <Grid xs={12}>
-
-                    <Link component={RouterLink} to={`/ranchs`} variant="button"  fontSize={"1em"} >
-                        <Button variant="text">
+        
                         <Typography variant="h5" component="h1">
                             Ranchs
                         </Typography>
-                        </Button>
-
-                        </Link> 
 
                     </Grid>
-                    <Grid xs={12} sx={{ padding:"1.5em .5em"}}>
+                    <Grid xs={12} sx={{ padding:"1.5em 0em"}}>
                         <Link component={RouterLink} to={`/ranchs/new`} variant="button"  fontSize={"1em"} >
-                            <Button variant="contained">Add new ranch</Button>
+                            <Button variant="contained">Add new </Button>
 
                         </Link>                
                     </Grid>
-
-
                 </Grid>
             </Grid>
 
             
-            <Grid xs={12}>
+            <Grid item xs={12}>
 
                 <Outlet/>
             </Grid>
 
-            <Grid xs={12} sx={{maxHeight:"60vh"}} >
-              <DataGrid rows={rows} columns={columns}  />
+            <Grid item xs={12} sx={{maxHeight:"60vh"}} >
+                <DataGrid rows={rows} columns={columns}  />
             </Grid>
         </Grid>
 
