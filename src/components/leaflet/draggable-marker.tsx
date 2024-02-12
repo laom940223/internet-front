@@ -46,7 +46,7 @@ export function DraggableMarker({ defaultLat, defaultLng, updateCoordinates } : 
         draggable={true}
         eventHandlers={eventHandlers}
         position={position}
-
+        // title="Test"
         ref={markerRef}>
         {/* <Popup minWidth={90}>
           <span >

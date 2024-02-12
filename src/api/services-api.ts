@@ -1,8 +1,15 @@
+import { isAxiosError } from "axios"
 import { InternetPackage } from "./internet-packages-api"
 import { APIClient, Ranch } from "./ranchs-api"
-import { ServerResponse } from "./server-response"
+import { AppError, ServerResponse } from "./server-response"
 
 
+export enum ServiceStatus {
+    ONLINE ="ONLINE",
+    OFFLINE = "OFFLINE",
+    CREATED = "CREATED",
+    PAYMENTDUE ="PAYMENTDUE"
+}
 
 export type Service ={
 
@@ -19,6 +26,7 @@ export type Service ={
     ranchId?: number
     paymentDay? : number,
     stripeId? : number
+    serviceStatus: ServiceStatus
 
 
 }
@@ -50,19 +58,44 @@ export const getServiceById = async (id:string)=>{
 
 
 
-export const createNewService = async ({ service  }: CreateUpdateService)=>{
+export const createNewService = async ({ service, id  }: CreateUpdateService)=>{
 
 
     const { ip } = service
+    const myip =ip==="" || ip===null  ? null : ip  
+
+
+    try{
 
     
+            if(!id){
+                const response = await APIClient.post<ServerResponse<Service>>(`/services`, {
+
+                    ...service,
+                    ip : myip 
+                })
+                return response.data.data
+            }
 
 
-    const response = await APIClient.post<ServerResponse<Service>>(`/services`, {
+            const response = await APIClient.put<ServerResponse<Service>>(`/services/${id}`, {
+                ...service,
+                ip : myip 
+            })
+            return response.data.data
+        }catch(err){
 
-        ...service,
-        ip : ip==="" || ip===null || ip===undefined ? undefined : ip  
-    })
-    return response.data.data
+            if(isAxiosError<ServerResponse<InternetPackage>>(err)){
+
+                throw new AppError("Custom error", err.response?.data.error.validationErrors)
+      
+            }
+
+            throw  err
+
+
+        }
+
+        
 
 }

@@ -7,7 +7,7 @@ import { useParseLocation } from "../hooks/useParseLocation"
 
 
 
-export const Dash = ()=>{
+export const ServiceLocation = ()=>{
 
 
 
@@ -17,7 +17,7 @@ export const Dash = ()=>{
     const longitude = parse.get("longitude")
 
 
-    console.log(+latitude!, +longitude!)
+    // console.log(+latitude!, +longitude!)
 
     return (
         <Grid container xs={12} sx={{mb:"1.5em"}}>

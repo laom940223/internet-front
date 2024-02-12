@@ -99,7 +99,7 @@ export const Layout =()=>{
         }
     })
     
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
     const toggleDrawer = () => {
       setOpen(!open);
     };
@@ -112,10 +112,10 @@ export const Layout =()=>{
       const len = full.length
 
       if( index+1 === len){
-        return <>{path.label}</>
+        return <Typography>{path.label}</Typography>
       } 
 
-      return <Link component={RouterLink} to={path.link} variant="caption"  sx={{ textDecoration:"none"}} fontSize={"1em"} >
+      return <Link key={index} component={RouterLink} to={path.link} variant="caption"  sx={{ textDecoration:"none"}} fontSize={"1em"} >
                             {path.label}
       
               </Link>

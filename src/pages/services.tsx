@@ -63,6 +63,8 @@ export const Services = ()=>{
     { field:"id", headerName:"ID", width:80},
     { field:"name", headerName:"Name", width:150},
     { field:"lastName", headerName:"Last Name", width:150},
+    { field:"paymentDay", headerName:"Payment day", width:150},
+    { field:"serviceStatus", headerName:"Status", width:150},
     { field:"ranch",headerName:"Ranch",  width:150,  renderCell: params =>{
 
         return params.row.ranch?.name!
@@ -85,7 +87,7 @@ export const Services = ()=>{
             <Box sx={{ display:"flex",gap:"1em", alignItems:"center" }} >
 
            
-                    <Link component={RouterLink} to={`/services/${params.row.id}`} variant="caption"  sx={{ textDecoration:"none"}} fontSize={"1em"} >
+                    <Link component={RouterLink} to={`/services/${params.row.id}/payments`} variant="caption"  sx={{ textDecoration:"none"}} fontSize={"1em"} >
                         
                         <Button variant="outlined">
                             Details

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 
 
 
-const defaultCoordinates={
+export const defaultCoordinates={
 
     
 latitude:23.8787249,

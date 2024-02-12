@@ -16,8 +16,9 @@ import { CreateRanchForm } from './components/ranchs/create-ranchform'
 import { InternetPackages } from './pages/packages'
 import {  Services } from './pages/services'
 import { AddNewService } from './components/services/add-new-service'
-import { Dash } from './pages/dash'
+import { ServiceLocation } from './pages/dash'
 import { ServiceDetails } from './components/services/service-details'
+import { ServicePayments } from './components/services/service-payments'
 
 
 const defaultTheme = createTheme();
@@ -40,14 +41,19 @@ function App() {
                 <Route element={ <PrivateRoute/>}> 
                     <Route   element={ <Layout/>  }>
 
-                        <Route path='/' element={<Dash/>}/>
+                        <Route path='/' element={<ServiceLocation/>}/>
                         
                         <Route path="/services" >
                             <Route path='/services' element ={<Services/>}/>
                             <Route path="/services/new" element={<AddNewService/>}/>
+
+
                             <Route path="/services/:id" element={<ServiceDetails/>}>
-                                <Route path='/services/:id/location' element={<Dash/>}/>
+                                <Route path='/services/:id/location' element={<ServiceLocation/>}/>        
+                                <Route path='/services/:id/payments' element={ <ServicePayments/>}/>
                             </Route>
+                            <Route path='/services/:id/edit' element={<AddNewService/> }/>
+
                         </Route>
 
 

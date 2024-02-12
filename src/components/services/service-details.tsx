@@ -3,6 +3,7 @@ import { Outlet, Link as RouterLink, useParams } from "react-router-dom"
 import { QUERIES } from "../../const/queries"
 import { getServiceById } from "../../api/services-api"
 import {  Grid, Link, Paper, Skeleton, Typography, useTheme } from "@mui/material"
+import { CustomLink } from "../global/custom-link"
 // import { Link as RouterLink} from 'react-router-dom'
 
 
@@ -49,6 +50,7 @@ export const ServiceDetails =()=>{
                             <Grid item xs={12}>
                             <Typography variant="body1">
                             <strong>Service ID:</strong> { `${serviceDetailQuery.data?.id}`}
+
                             </Typography>
                             </Grid>
 
@@ -65,7 +67,20 @@ export const ServiceDetails =()=>{
 
                             <Grid item xs={12}>
                                 <Typography variant="body1">
-                                <strong>Payment Day:</strong> { `${serviceDetailQuery.data?.paymentDay || "TODO add an option" } `}
+                                <strong>Status:</strong> { `${serviceDetailQuery.data?.serviceStatus}`}
+                                </Typography>
+                            </Grid>
+
+                            <Grid item xs={12}>
+                                <Typography variant="body1">
+                                <strong>Payment Day:</strong> 
+                                {`${serviceDetailQuery.data?.paymentDay || "Not defined"}`}
+{/* 
+                                <CustomLink 
+                                    to={`/services/${params.id}/payments`} 
+                                    text=" Payment Details"
+                                />   */}
+                                
                                 </Typography>
                             </Grid>
 
@@ -79,7 +94,7 @@ export const ServiceDetails =()=>{
 
                             <Grid item xs={12}>
                             <Typography variant="body1">
-                                <strong>IP Address</strong> { `${serviceDetailQuery.data?.ip || "To do add an add method " }`}
+                                <strong>IP Address</strong> { `${serviceDetailQuery.data?.ip || "Not provided" }`}
                             </Typography>
                             </Grid>
 
@@ -97,14 +112,10 @@ export const ServiceDetails =()=>{
                             <Grid item xs={12}>
                                 <Typography variant="body1">
                                     <strong>Location:</strong> 
-                                    <Link component={RouterLink} 
-                                        to={`/services/${serviceDetailQuery.data?.id}/location?latitude=${serviceDetailQuery.data?.latitude}&longitude=${serviceDetailQuery.data?.longitude}`} 
-                                        variant="caption"  sx={{ textDecoration:"none"}} fontSize={"1em"} >
-                            
-                                        
-                                            Show location
-                                                
-                                    </Link> 
+                                    <CustomLink
+                                        to={`/services/${params.id}/location?latitude=${serviceDetailQuery.data?.latitude}&longitude=${serviceDetailQuery.data?.longitude}`}
+                                        text="Show Location"
+                                    />
 
                                     
                                 </Typography>
@@ -113,7 +124,12 @@ export const ServiceDetails =()=>{
                         </Grid>
                     </Grid>
                    
-
+                    <Grid item xs={12} sx={{ display:"flex", justifyContent:"flex-end"}}>
+                        <CustomLink 
+                            text="Edit info"
+                            to={`/services/${serviceDetailQuery.data?.id}/edit`}
+                        />
+                    </Grid>
                     
                 </Grid>
             </Paper>
